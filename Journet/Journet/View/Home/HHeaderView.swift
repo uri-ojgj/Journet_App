@@ -3,6 +3,7 @@ import SwiftUI
 struct HHeaderView: View {
     var size: CGSize
     var safeArea: EdgeInsets
+    @Environment(SharedData.self) private var sharedData
     
     var body: some View {
         let screenHeight = size.height + safeArea.top + safeArea.bottom
@@ -24,6 +25,8 @@ struct HHeaderView: View {
         }
         .scrollIndicators(.hidden)
         .scrollTargetBehavior(.paging)
+        
+        .scrollDisabled(sharedData.isExpanded)
         .frame(height: screenHeight)
         .frame(height: screenHeight - minimisedHeight, alignment: .bottom)
     }
@@ -41,6 +44,7 @@ struct HHeaderView: View {
             }
         }
         .defaultScrollAnchor(.bottom)
+        .scrollDisabled(!sharedData.isExpanded)
     }
     
     //MARK: - Paging Views
