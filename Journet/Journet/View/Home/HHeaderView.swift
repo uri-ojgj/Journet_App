@@ -1,47 +1,67 @@
 import SwiftUI
 
-struct hHeaderView: View {
-    @State var text: String = ""
+struct HHeaderView: View {
+    var size: CGSize
+    var safeArea: EdgeInsets
+    @Environment(SharedData.self) private var sharedData
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            headerTextView()
-                .padding(.horizontal, 40)
-            HStack(alignment: .center, spacing: -25) {
-                searchingBar(text: self.$text)
-                mapdelegate()
-                    .padding()
+        let screenHeight = size.height + safeArea.top + safeArea.bottom
+        let minimisedHeight = screenHeight * 0.4
+        
+        ScrollView(.horizontal) {
+            LazyHStack(alignment: .bottom, spacing: 0) {
+                // MARK: - Grid MapView
+                GridMapView()
+                    .frame(width: size.width)
+                
+                Group {
+                    StrechableView(.blue)
+                    StrechableView(.yellow)
+                    StrechableView(.cyan)
+                }
+                .frame(height: screenHeight - minimisedHeight)
             }
         }
-    }
-}
-
-//MARK: - TextView
-struct headerTextView: View {
-    var body: some View {
+        .scrollIndicators(.hidden)
+        .scrollTargetBehavior(.paging)
         
-        Spacer(minLength: 20)
-        VStack(alignment: .leading) {
-            Text("Journet")
-                .font(.Hanbit20)
-                .foregroundColor(Color("MainColor"))
-        }
+        .scrollDisabled(sharedData.isExpanded)
+        .frame(height: screenHeight)
+        .frame(height: screenHeight - minimisedHeight, alignment: .bottom)
     }
-}
-
-//MARK: - Bell icon -> Notification View
-struct mapdelegate: View {
-    var body: some View {
-        NavigationLink(destination: NotificationView()) {
-            Image(systemName: "bell.fill")
-                .resizable()
-                .frame(width: 20, height: 23, alignment: .center)
-                .foregroundColor(Color("MainColor"))
-                .padding()
+    
+    //MARK: - Grid Views
+    @ViewBuilder
+    func GridMapView() -> some View {
+        ScrollView(.vertical) {
+            LazyVGrid(columns: Array(repeating: GridItem(spacing: 4), count: 3), spacing: 4) {
+                ForEach(0...300, id:\.self) { _ in
+                    Rectangle()
+                        .fill(.red)
+                        .frame(height: 120)
+                }
+            }
         }
+        .defaultScrollAnchor(.bottom)
+        .scrollDisabled(!sharedData.isExpanded)
+    }
+    
+    //MARK: - Paging Views
+    func StrechableView(_ color: Color) -> some View {
+        GeometryReader {
+            let minY = $0.frame(in: .scrollView(axis: .vertical)).minY
+            let size = $0.size
+            
+            Rectangle()
+                .fill(color)
+                .frame(width: size.width, height: size.height + (minY > 0 ? minY : 0))
+                .offset(y: (minY > 0 ? -minY : 0))
+        }
+        .frame(width: size.width)
     }
 }
 
 #Preview {
-    hHeaderView()
+    ContentView()
 }
