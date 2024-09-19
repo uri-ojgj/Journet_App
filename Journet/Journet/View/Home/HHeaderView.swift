@@ -1,43 +1,30 @@
 import SwiftUI
 
 struct hHeaderView: View {
-    @State var text: String = ""
-    
     var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            headerTextView()
-                .padding(.horizontal, 40)
-            HStack(alignment: .center, spacing: -25) {
-                searchingBar(text: self.$text)
-                mapdelegate()
-                    .padding()
-            }
+        HStack {
+            headerLeft()
+            Spacer()
         }
     }
 }
 
-//MARK: - TextView
-struct headerTextView: View {
+struct headerLeft: View {
     var body: some View {
-        
-        Spacer(minLength: 20)
         VStack(alignment: .leading) {
-            Text("Journet")
+            Text("라희님,")
                 .font(.Hanbit20)
-                .foregroundColor(Color("MainColor"))
+            Text("오늘 하루도 화이팅하세요!")
+                .font(.Hanbit20)
         }
+        .padding(.leading, 20)
     }
 }
 
-//MARK: - Bell icon -> Notification View
-struct mapdelegate: View {
+struct headerRight: View {
     var body: some View {
-        NavigationLink(destination: NotificationView()) {
-            Image(systemName: "bell.fill")
-                .resizable()
-                .frame(width: 20, height: 23, alignment: .center)
-                .foregroundColor(Color("MainColor"))
-                .padding()
+        HStack(alignment: .center) {
+            
         }
     }
 }
