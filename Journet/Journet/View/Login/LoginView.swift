@@ -62,7 +62,7 @@ struct LFooterView: View {
         if showTabbarView {
             LoginView()
                 .fullScreenCover(isPresented: $showTabbarView, content: {
-                    TabbarView()
+                    //
                 })
         }
         
@@ -102,7 +102,7 @@ struct guestActionTextButton: View {
         if showTabbarViews {
             LoginView()
                 .fullScreenCover(isPresented: $showTabbarViews, content: {
-                    TabbarView()
+                    //
                 })
         }
         

@@ -2,19 +2,20 @@ import SwiftUI
 
 //MARK: - Views setup
 struct HomeView: View {
+    var size: CGSize
+    var safeArea: EdgeInsets
+    
     var body: some View {
-        ZStack {
-            MapView()
-            VStack {
-                hHeaderView()
-                Spacer()
+        ScrollView(.vertical) {
+            VStack(spacing: 10) {
+                HHeaderView(size: size, safeArea: safeArea)
+                
             }
         }
-        .padding(.top, 35)
     }
 }
 
 //MARK: - Previews
 #Preview {
-    HomeView()
+    ContentView()
 }

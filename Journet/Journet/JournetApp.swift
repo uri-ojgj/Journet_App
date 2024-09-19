@@ -9,7 +9,7 @@ struct JournetApp: App {
             if didLaunchBefore {
                 WelcomeView()
             } else {
-                TabbarView()
+                ContentView()
             }
         }
     }
